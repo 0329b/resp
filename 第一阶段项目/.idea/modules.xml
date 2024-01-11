@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Pos System/Pos System.iml" filepath="$PROJECT_DIR$/Pos System/Pos System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Pos System Client/Pos System Client.iml" filepath="$PROJECT_DIR$/Pos System Client/Pos System Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/第一阶段项目.iml" filepath="$PROJECT_DIR$/.idea/第一阶段项目.iml" />
+    </modules>
+  </component>
+</project>
