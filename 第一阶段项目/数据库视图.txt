@@ -1,0 +1,66 @@
+//删除一个触发器
+DROP TRIGGER IF EXISTS `t1`; 
+//创建一个触发器
+delimiter $$
+CREATE  TRIGGER `t1` 
+AFTER INSERT ON `sell_info` 
+FOR EACH ROW 
+BEGIN
+UPDATE goods SET inventory = (inventory-new.s_quantity)WHERE c_number = new.s_c_number;
+UPDATE vip SET v_score= v_score+(new.s_c_number*new.s_quantity)WHERE v_number = new.s_vip_number;
+END
+$$
+delimiter ;
+//验证操作语句
+insert into sell_info(s_c_number,s_quantity,s_time,s_e_number,s_vip_number)values
+('2','100',now(),'s0002','vip201901020002');
+
+
+
+
+
+
+
+create or replace view check_info
+as
+select t.work_date,t.employee_no,clock_in_time,clock_off_time, 
+	case 
+	  when diff_in_time<-120
+			then '旷工'
+		when diff_in_time<0 
+			then '迟到'
+		when diff_in_time>=0
+			then '正常'
+		else '忘记打卡'
+	end as diff_in_status,
+	case 
+	        when diff_off_time>120
+			then '旷工'
+		when diff_off_time>0 
+			then '早退'
+		when diff_off_time<=0
+			then '正常'
+		else '忘记打卡'
+	end as diff_off_time
+
+
+from check_info_son t 
+
+
+
+create or replace view check_info_son
+as
+select work_date,employee_no,clock_in_time,clock_off_time,
+TIMESTAMPDIFF(MINUTE, clock_in_time, concat(clock_date,' 09:00:00')) as diff_in_time,
+TIMESTAMPDIFF(MINUTE, clock_off_time, concat(clock_date,' 18:00:00')) as diff_off_time
+from work_date w 
+left join clock_info t 
+on t.clock_date = w.work_date 
+
+
+
+
+select * from check_info;
+
+
+select * from employee where number='s0001';
