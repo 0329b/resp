@@ -22,22 +22,18 @@ public class VipView {
         String select = sc.next();
         switch (select) {
             case "1":
-                System.out.println("请你输入你的账号");
-                String number=sc.next();
-                Vip vip = new Vip("integral", number);
+                Vip vip = new Vip("integral");
                 return JSON.toJSONString(vip);
             case "2":
                 return personalView();
             case "3":
-                System.out.println("请输入你的账号");
-                String v_number=sc.next();
-                Vip vip1 = new Vip("integral", v_number);
+                Vip vip1 = new Vip("integral");
                 dos.writeUTF(JSON.toJSONString(vip1));
                 dos.flush();
                 String s=dis.readUTF();
                 System.out.println("你的积分："+s);
                 System.out.println("你能兑换的商品如下：");
-                Vip query = new Vip("query", v_number);
+                Vip query = new Vip("query");
                 dos.writeUTF(JSON.toJSONString(query));
                 dos.flush();
                 String responseJson=dis.readUTF();
@@ -61,15 +57,16 @@ public class VipView {
                     sc.nextLine(); // 处理换行符
                     productQuantityMap.put(product, quantity);
                 }
-                Vip settle = new Vip("v_settle", productQuantityMap,v_number);
+                Vip settle = new Vip("v_settle", productQuantityMap);
                 dos.writeUTF(JSON.toJSONString(settle));
                 dos.flush();
                 System.out.println(dis.readUTF());;
-                return null;
+                return vipMainView(dos,dis);
             case "0":
                 System.exit(0);
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return vipMainView(dos,dis);
         }
     }
 //个人信息
@@ -78,18 +75,14 @@ public class VipView {
         String select = sc.next();
         switch (select) {
             case "1": {
-                System.out.println("请输入你的账号");
-                String number=sc.next();
                 System.out.println("请你输入旧密码");
                 String old_password=sc.next();
                 System.out.println("请你输入新密码");
                 String new_password=sc.next();
-                Vip vip = new Vip("update1", number,old_password, new_password);
+                Vip vip = new Vip("update1",old_password, new_password);
                 return JSON.toJSONString(vip);
             }
             case "2":
-                System.out.println("请输入你的账号");
-                String number=sc.next();
                 System.out.println("请输入新手机号");
                 String regx3 = "1[^012]\\d{9}";//手机正则
                 String phone;
@@ -100,12 +93,13 @@ public class VipView {
                     }
                     System.out.println("手机号不规范,请重新输入");
                 }
-                Vip vip1 = new Vip("update2", number, phone);
+                Vip vip1 = new Vip("update2", phone);
                 return JSON.toJSONString(vip1);
             case "0":
                 return vipMainView(dos, dis);
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return personalView();
         }
     }
 }

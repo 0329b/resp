@@ -16,6 +16,16 @@ public class Clock {
     private Date updateTime;
     private int work_date_id;
     private Date work_date;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public String getOrder() {
         return order;
     }
@@ -118,6 +128,6 @@ public class Clock {
                 ",上班打卡时间：" + clock_in_time +
                 ",下班打卡时间：" + clock_off_time +
                 ",当天日期" + clock_date +
-                ",修改时间" + updateTime;
+                ",备注:" +remark;
     }
 }

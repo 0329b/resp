@@ -80,6 +80,9 @@ public class Purchase {
         this.inventory = inventory;
     }
 
+    public Purchase() {
+    }
+
     @Override
     public String toString() {
         return "商品编号：" + number +

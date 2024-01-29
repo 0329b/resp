@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 类名: Tread.ServerThread
@@ -47,22 +45,35 @@ public class ServerThread implements Runnable {
                     try {
                         Employee employee = JSON.parseObject(s,Employee.class);
                         String order=employee.getOrder();
-                        if(order.equals("update1") || order.equals("update2") || order.equals("add") || order.equals("clock_in") || order.equals("clock_off")) {
-                            Clock clock = JSON.parseObject(s, Clock.class);
-                            System.out.println("2");
-                            System.out.println(clock.toString());
-                            timeCard(clock);
+                        switch (order) {
+                            case "update1":
+                            case "update2":
+                            case "addClock":
+                            case "clock_in":
+                            case "clock_off":
+                                Clock clock = JSON.parseObject(s, Clock.class);
+                                System.out.println("2");
+                                System.out.println(clock.toString());
+                                timeCard(clock);
+                                break;
+                            case "reset":
+                            case "logout":
+                            case "addvip":
+                                Vip vip = JSON.parseObject(s, Vip.class);
+                                VipFunction(vip);
+                                break;
+                            case "day":
+                            case "month":
+                            case "quarter":
+                            case"queryRandom":
+                            case "year":
+                                TurnOver tu = JSON.parseObject(s, TurnOver.class);
+                                System.out.println("hduahdu");
+                                queryPrice(tu);
+                                break;
+                            default:
+                                allEmployee(employee);
                         }
-                        if(order.equals("reset") || order.equals("logout") || order.equals("addvip")) {
-                            Vip vip=JSON.parseObject(s,Vip.class);
-                            VipFunction(vip);
-                        }
-                        if(order.equals("day") || order.equals("month") || order.equals("quarter")|| order.equals("year")) {
-                            TurnOver tu=JSON.parseObject(s,TurnOver.class);
-                            System.out.println("销售："+tu.toString());
-                            queryPrice(tu);
-                        }
-                        allEmployee(employee);
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -75,18 +86,24 @@ public class ServerThread implements Runnable {
                     try {
                         Cashier product = JSON.parseObject(s, Cashier.class);
                         String order=product.getOrder();
-                        if(!order.equals("settle") && !order.equals("!settle") && !order.equals("queryVip") && !order.equals("update1") && !order.equals("update2")){
-                            Vip vip=JSON.parseObject(s,Vip.class);
-                            System.out.println("1");
-                            VipFunction(vip);
+                        switch (order){
+                            case "addvip":
+                            case "reset":
+                            case"logout":
+                                Vip vip=JSON.parseObject(s,Vip.class);
+                                System.out.println("1");
+                                VipFunction(vip);
+                                break;
+                            case"clock_in":
+                            case"clock_off":
+                                Clock clock = JSON.parseObject(s, Clock.class);
+                                System.out.println("3");
+                                timeCard(clock);
+                                break;
+                            default:
+                                System.out.println("2");
+                                cashierView(product);
                         }
-                        if(order.equals("clock_in")||order.equals("clock_off")){
-                            Clock clock = JSON.parseObject(s, Clock.class);
-                            System.out.println("3");
-                            timeCard(clock);
-                        }
-                        System.out.println("2");
-                        cashierView(product);
                     } catch (IOException e) {
                         System.out.println(e);
                     }
@@ -97,13 +114,17 @@ public class ServerThread implements Runnable {
                     String s = dis.readUTF();
                     try {
                         Purchase purchase = JSON.parseObject(s, Purchase.class);
-                        System.out.println(purchase);
-                        if(purchase.getC_price()==null){
-                            Clock clock = JSON.parseObject(s, Clock.class);
-                            System.out.println(clock);
-                            timeCard(clock);
+                        String order=purchase.getOrder();
+                        switch (order){
+                            case"clock_in":
+                            case"clock_off":
+                                Clock clock = JSON.parseObject(s, Clock.class);
+                                System.out.println("3");
+                                timeCard(clock);
+                                break;
+                            default:
+                                PurchaseView(purchase);
                         }
-                        PurchaseView(purchase);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

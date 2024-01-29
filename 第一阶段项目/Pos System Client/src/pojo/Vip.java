@@ -14,10 +14,9 @@ public class Vip {
     private String v_name;
     private Map<String, Integer> productQuantityMap; // 商品名称与数量的映射
 
-    public Vip(String order, Map<String, Integer> productQuantityMap, String v_number) {
+    public Vip(String order, Map<String, Integer> productQuantityMap) {
         this.order = order;
         this.productQuantityMap = productQuantityMap;
-        this.v_number = v_number;
     }
 
     private String v_number;
@@ -26,6 +25,10 @@ public class Vip {
     private String v_phone;
     private String v_date;
     private int v_remark;
+
+    public Vip(String integral) {
+        this.order=integral;
+    }
 
     public String getV_name() {
         return v_name;

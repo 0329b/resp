@@ -47,7 +47,7 @@ public interface AdminService {
 
     String queryMonth(TurnOver tu, Connection conn) throws SQLException;
 
-    String queryQuarter(TurnOver tu, Connection conn) throws SQLException;
+    String queryRandom(TurnOver tu, Connection conn) throws SQLException;
 
     String queryYear(TurnOver tu, Connection conn) throws SQLException;
 
@@ -65,7 +65,9 @@ public interface AdminService {
 
     String top5(Connection conn) throws SQLException;
 
-    boolean clock_in(Clock clock, Connection conn) throws SQLException;
+    boolean clock_in(Clock clock, Connection conn, String number) throws SQLException;
 
-    boolean clock_off(Clock clock, Connection conn) throws SQLException;
+    boolean clock_off(Clock clock, Connection conn, String number) throws SQLException;
+
+    String quarter(TurnOver tu, Connection conn);
 }

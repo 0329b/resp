@@ -4,6 +4,16 @@ public class TurnOver {
     private String start_time;
     private String end_time;
     private String order;
+    //打印季度营业额
+    private String quarter;
+    private Double amount;
+
+    @Override
+    public String toString() {
+        return "季度：" + quarter +
+                ", 营业额：" + amount ;
+    }
+
 
     public String getStart_time() {
         return start_time;
@@ -25,7 +35,7 @@ public class TurnOver {
     }
 
     public TurnOver(String order, String start_time, String end_time) {
-        this.order=order;
+        this.order = order;
         this.start_time = start_time;
         this.end_time = end_time;
     }
@@ -39,7 +49,7 @@ public class TurnOver {
     }
 
     public TurnOver(String order, String start_time) {
-        this.order=order;
+        this.order = order;
         this.start_time = start_time;
     }
 }

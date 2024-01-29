@@ -15,6 +15,8 @@ import java.sql.SQLException;
 public class Controller {
     private boolean isLogin;
     private String charater;
+    //记录登录账号
+    public static String number;
 
     public boolean isLogin() {
         return isLogin;
@@ -44,24 +46,28 @@ public class Controller {
                 boolean judge = admin.adminLogin(loginKind, conn);
                 System.out.println(judge);
                 charater = "管理员";
+                number=loginKind.getNumber();
                 return judge ? "登陆成功" : "登陆失败";
             }
             case "收银员": {
                 boolean judge = admin.adminLogin(loginKind, conn);
                 System.out.println(judge);
                 charater = "收银员";
+                number=loginKind.getNumber();
                 return judge ? "登陆成功" : "登陆失败";
             }
             case "采购员":{
                 boolean judge = admin.adminLogin(loginKind, conn);
                 System.out.println(judge);
                 charater = "采购员";
+                number=loginKind.getNumber();
                 return judge ? "登陆成功" : "登陆失败";
             }
             case "vip":{
                 boolean judge = vipService.Login(loginKind, conn);
                 System.out.println(judge);
                 charater = "vip";
+                number=loginKind.getNumber();
                 return judge ? "登陆成功" : "登陆失败";
             }
             default:
@@ -117,12 +123,12 @@ public class Controller {
                 return admin.updateCard1(clock, conn)?"补卡成功":"补卡失败";
             case "update2":
                 return admin.updateCard2(clock, conn)?"补卡成功":"补卡失败";
-            case "add":
+            case "addClock":
                 return admin.addDay(clock,conn)?"添加成功":"添加失败";
             case "clock_in":
-                return admin.clock_in(clock,conn)?"打卡成功":"打卡失败";
+                return admin.clock_in(clock,conn,number)?"打卡成功":"打卡失败";
             case "clock_off":
-                return admin.clock_off(clock,conn)?"打卡成功":"打卡失败";
+                return admin.clock_off(clock,conn,number)?"打卡成功":"打卡失败";
             default:
                 return "没有该操作";
         }
@@ -144,13 +150,16 @@ public class Controller {
 //查询营业额
     public String adminPrice(TurnOver tu, Connection conn) throws SQLException {
         String type = tu.getOrder();
+        System.out.println("日营业额命令"+type);
         switch (type){
             case "day":
                 return admin.queryDay(tu,conn);
             case "month":
                 return admin.queryMonth(tu,conn);
-            case "quarter":
-                return admin.queryQuarter(tu,conn);
+            case"quarter":
+                return admin.quarter(tu,conn);
+            case "queryRandom":
+                return admin.queryRandom(tu,conn);
             case "year":
                 return admin.queryYear(tu,conn);
             default:
@@ -162,15 +171,15 @@ public class Controller {
         String type=s.getOrder();
         switch (type){
             case "settle":
-                return cash.settle(s,conn);
+                return cash.settle(s,conn,number);
             case "!settle":
-                return cash.settle2(s,conn);
+                return cash.settle2(s,conn,number);
             case "queryVip":
                 return cash.queryVip(s,conn);
             case "update1":
-                return cash.update1(s,conn);
+                return cash.update1(s,conn,number);
             case "update2":
-                return cash.update2(s,conn);
+                return cash.update2(s,conn,number);
             default:
                 return "没有该操作";
         }
@@ -183,11 +192,11 @@ public class Controller {
             case "queryGoods":
                 return purchases.queryGoods(purchase,conn);
             case "add":
-                return purchases.addGoods(purchase,conn);
+                return purchases.addGoods(purchase,conn,number);
             case "new_add":
-                return purchases.new_addGoods(purchase,conn);
+                return purchases.new_addGoods(purchase,conn,number);
             case "delete":
-                return purchases.deleteGoods(purchase,conn);
+                return purchases.deleteGoods(purchase,conn,number);
             default:
                 return "没有该操作";
         }
@@ -195,17 +204,18 @@ public class Controller {
 //vip操作界面
     public String vipMain(Vip vip, Connection conn) throws SQLException {
         String type=vip.getOrder();
+        System.out.println(type);
         switch (type){
             case "integral":
-                return vipService.integral(vip,conn);
+                return vipService.integral(vip,conn,number);
             case "update1":
-                return vipService.update1(vip,conn);
+                return vipService.update1(vip,conn,number);
             case "update2":
-                return vipService.update2(vip,conn);
+                return vipService.update2(vip,conn,number);
             case "query":
-                return vipService.query(vip,conn);
+                return vipService.query(vip,conn,number);
             case "v_settle":
-                return vipService.v_settle(vip,conn);
+                return vipService.v_settle(vip,conn,number);
             default:
                 return "没有该操作";
         }

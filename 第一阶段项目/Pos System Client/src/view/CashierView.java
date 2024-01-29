@@ -36,7 +36,7 @@ public class CashierView {
                 String name=sc.next();
                 String phone=sc.next();
                 Date time=new Date();
-                Vip vip=new Vip("add",name,number,"6666",0,phone,sf.format(time));
+                Vip vip=new Vip("addvip",name,number,"6666",0,phone,sf.format(time));
                 return JSON.toJSONString(vip);
             }
             case "4":
@@ -45,8 +45,6 @@ public class CashierView {
                 {
                     SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                     SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println("请输入你的工号");
-                    String number = sc.next();
                     Date time = new Date();
                     String today = sf1.format(time);
                     String judge_time = today + " " + "18:00:00";
@@ -54,15 +52,13 @@ public class CashierView {
                         System.out.println("时间已过，无法打上班卡");
                         return cashMain();
                     }
-                    Clock clock = new Clock("clock_in", number, time, sf1.parse(today));
+                    Clock clock = new Clock("clock_in", time, sf1.parse(today));
                     return JSON.toJSONString(clock);
                 }
             case "6":
                 {
                     SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                     SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println("请输入你的工号");
-                    String number = sc.next();
                     Date time = new Date();
                     String today = sf1.format(time);
                     String judge_time = today + " " + "18:00:00";
@@ -70,13 +66,14 @@ public class CashierView {
                         System.out.println("时间未到，无法打下班卡");
                         return cashMain();
                     }
-                    Clock clock = new Clock("clock_off", number, time, sf1.parse(today));
+                    Clock clock = new Clock("clock_off", time, sf1.parse(today));
                     return JSON.toJSONString(clock);
                 }
             case "0":
                 System.exit(0);
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return cashMain();
         }
     }
 //修改个人信息界面
@@ -87,16 +84,12 @@ public class CashierView {
             case "1": {
                 System.out.println("请输入旧密码");
                 String password=sc.next();
-                System.out.println("请输入你的账号");
-                String number=sc.next();
                 System.out.println("请输入新密码");
                 String new_password=sc.next();
-                Cashier cashier = new Cashier("update1", number, password, new_password);
+                Cashier cashier = new Cashier("update1", password, new_password);
                 return JSON.toJSONString(cashier);
             }
             case "2":
-                System.out.println("请输入你的账号");
-                String number=sc.next();
                 System.out.println("请输入新手机号");
                 String regx3 = "1[^012]\\d{9}";//手机正则
                 String phone;
@@ -107,12 +100,13 @@ public class CashierView {
                     }
                     System.out.println("手机号不规范,请重新输入");
                 }
-                Cashier cashier = new Cashier("update2", number,phone);
+                Cashier cashier = new Cashier("update2",phone);
                 return JSON.toJSONString(cashier);
             case "0":
                 return cashMain();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return  personInfoView();
         }
     }
 
@@ -165,7 +159,8 @@ public class CashierView {
             case "0":
                 return cashMain();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return vipView();
         }
     }
 }

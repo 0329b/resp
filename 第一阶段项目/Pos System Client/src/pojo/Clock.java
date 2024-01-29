@@ -16,7 +16,22 @@ public class Clock {
     private Date updateTime;
     private int work_date_id;
     private Date work_date;
+private String remark;
 
+    public Clock(String order, String number, Date clock_date, Date updateTime) {
+        this.order=order;
+        this.employee_no=number;
+        this.clock_date = clock_date;
+        this.updateTime=updateTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public int getWork_date_id() {
         return work_date_id;
@@ -99,9 +114,8 @@ public class Clock {
     public Clock() {
     }
 //补卡功能
-    public Clock(String order,String employee_no, Date clock_date,Date updateTime) {
+    public Clock(String order, Date clock_date,Date updateTime) {
         this.order=order;
-        this.employee_no = employee_no;
         this.clock_date = clock_date;
         this.updateTime=updateTime;
     }
@@ -120,6 +134,7 @@ public class Clock {
                 ",打卡的员工编号：" + employee_no +
                 ",上班打卡时间：" + clock_in_time +
                 ",下班打卡时间：" + clock_off_time +
-                ",当天日期" + clock_date;
+                ",当天日期:" + clock_date+
+                ",备注:"+remark;
     }
 }

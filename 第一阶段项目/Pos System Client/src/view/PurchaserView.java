@@ -32,8 +32,6 @@ public class PurchaserView {
             {
                 SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("请输入你的工号");
-                String number = sc.next();
                 Date time = new Date();
                 String today = sf1.format(time);
                 String judge_time = today + " " + "18:00:00";
@@ -41,15 +39,13 @@ public class PurchaserView {
                     System.out.println("时间已过，无法打上班卡");
                     return purchaseMain();
                 }
-                Clock clock = new Clock("clock_in", number, time, sf1.parse(today));
+                Clock clock = new Clock("clock_in", time, sf1.parse(today));
                 return JSON.toJSONString(clock);
             }
             case "5":
             {
                 SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("请输入你的工号");
-                String number = sc.next();
                 Date time = new Date();
                 String today = sf1.format(time);
                 String judge_time = today + " " + "18:00:00";
@@ -57,13 +53,14 @@ public class PurchaserView {
                     System.out.println("时间未到，无法打下班卡");
                     return purchaseMain();
                 }
-                Clock clock = new Clock("clock_off", number, time, sf1.parse(today));
+                Clock clock = new Clock("clock_off", time, sf1.parse(today));
                 return JSON.toJSONString(clock);
             }
             case "0":
                 System.exit(0);
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return purchaseMain();
         }
     }
 //商品上架界面
@@ -90,7 +87,8 @@ public class PurchaserView {
             case "0":
                 return purchaseMain();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return shelveView();
         }
     }
 

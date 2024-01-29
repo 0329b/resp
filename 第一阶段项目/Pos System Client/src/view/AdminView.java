@@ -48,7 +48,8 @@ public class AdminView {
             case "0":
                 System.exit(0);
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return command();
         }
     }
 //打卡界面
@@ -60,8 +61,6 @@ public class AdminView {
             {
                 SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("请输入你的工号");
-                String number = sc.next();
                 Date time = new Date();
                 String today = sf1.format(time);
                 String judge_time = today + " " + "18:00:00";
@@ -69,15 +68,13 @@ public class AdminView {
                     System.out.println("时间已过，无法打上班卡");
                     return clock_inView();
                 }
-                Clock clock = new Clock("clock_in", number, time, sf1.parse(today));
+                Clock clock = new Clock("clock_in", time, sf1.parse(today));
                 return JSON.toJSONString(clock);
             }
             case "2":
             {
                 SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat sf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println("请输入你的工号");
-                String number = sc.next();
                 Date time = new Date();
                 String today = sf1.format(time);
                 String judge_time = today + " " + "18:00:00";
@@ -85,13 +82,14 @@ public class AdminView {
                     System.out.println("时间未到，无法打下班卡");
                     return clock_inView();
                 }
-                Clock clock = new Clock("clock_off", number, time, sf1.parse(today));
+                Clock clock = new Clock("clock_off", time, sf1.parse(today));
                 return JSON.toJSONString(clock);
             }
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return clock_inView();
         }
     }
 
@@ -127,7 +125,8 @@ public class AdminView {
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return queryView();
         }
     }
 //员工薪水界面
@@ -154,7 +153,8 @@ public class AdminView {
             case "0":
                 return queryView();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return employeeSalaryView();
         }
     }
 
@@ -183,41 +183,58 @@ public class AdminView {
                 TurnOver turnOver=new TurnOver("month",start_time,end_time);
                 return JSON.toJSONString(turnOver);
             }
-            case "5":
-            case "3":{
-                System.out.println("请你输入开始的时间(yyyy-MM-dd)");
-                String start_time=sc.next();
-                System.out.println("请你输入结束时间(yyyy-MM-dd)");
-                String end_time=sc.next();
-                TurnOver turnOver=new TurnOver("quarter",start_time,end_time);
+            case "3": {
+                System.out.println("请输入某一年");
+                String years = getYear();
+                String []yearArr=years.split(",");
+                String firstDay=yearArr[0];
+                String lastDay=yearArr[1];
+                TurnOver turnOver=new TurnOver("quarter",firstDay,lastDay);
                 return JSON.toJSONString(turnOver);
             }
             case "4":{
                 System.out.println("请你输入要查询的年份");
-                int year=sc.nextInt();
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.YEAR, year);
-                // 获取年份的第一天
-                calendar.set(Calendar.DAY_OF_YEAR, 1);
-                Date firstDayOfYear = calendar.getTime();
-
-                // 获取年份的最后一天
-                calendar.set(Calendar.DAY_OF_YEAR, calendar.getActualMaximum(Calendar.DAY_OF_YEAR));
-                Date lastDayOfYear = calendar.getTime();
-
-                // 指定输出日期的格式
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                String firstDay = dateFormat.format(firstDayOfYear);
-                String lastDay = dateFormat.format(lastDayOfYear);
+                String years = getYear();
+                String []yearArr=years.split(",");
+                String firstDay=yearArr[0];
+                String lastDay=yearArr[1];
                 TurnOver turnOver=new TurnOver("year",firstDay,lastDay);
+                return JSON.toJSONString(turnOver);
+            }
+            case "5":{
+                System.out.println("请你输入开始的时间(yyyy-MM-dd)");
+                String start_time=sc.next();
+                System.out.println("请你输入结束时间(yyyy-MM-dd)");
+                String end_time=sc.next();
+                TurnOver turnOver=new TurnOver("queryRandom",start_time,end_time);
                 return JSON.toJSONString(turnOver);
             }
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return turnoverView();
         }
+    }
+
+    private String getYear() {
+        int year=sc.nextInt();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        // 获取年份的第一天
+        calendar.set(Calendar.DAY_OF_YEAR, 1);
+        Date firstDayOfYear = calendar.getTime();
+
+        // 获取年份的最后一天
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.getActualMaximum(Calendar.DAY_OF_YEAR));
+        Date lastDayOfYear = calendar.getTime();
+
+        // 指定输出日期的格式
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String firstDay = dateFormat.format(firstDayOfYear);
+        String lastDay = dateFormat.format(lastDayOfYear);
+        return firstDay+","+lastDay;
     }
 
     //vip管理界面
@@ -249,7 +266,8 @@ public class AdminView {
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return vipView();
         }
     }
 
@@ -270,7 +288,8 @@ public class AdminView {
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return staffView();
         }
     }
 //添加工作日
@@ -278,7 +297,7 @@ public class AdminView {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("请你输入要添加的工作日(yyyy-MM-dd)");
         String date=sc.next();
-        Clock clock=new Clock("add",sf.parse(date));
+        Clock clock=new Clock("addClock",sf.parse(date));
         return JSON.toJSONString(clock);
     }
 
@@ -320,12 +339,10 @@ public class AdminView {
 
     //考勤异常
     private String anomaly() throws ParseException {
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("请你输入指定日期(yyyy-MM-dd)");
         String date=sc.next();
-        String start_date=date+" "+"09:00:00";
-        String end_date=date+" "+"18:00:00";
-        Employee an = new Employee("anomaly", sf.parse(start_date), sf.parse(end_date));
+        Employee an = new Employee("anomaly", sf.parse(date),sf.parse(date));
         System.out.println(an.getStart_Date());
         return JSON.toJSONString(an);
     }
@@ -356,24 +373,26 @@ public class AdminView {
             case "3": {
                 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 System.out.println("请输入查询的开始日期(yyyy-MM-dd)");
-                String start=sc.next()+" "+"16:00:00";
-                String end=start+" "+"18:00:00";
+                String st=sc.next();
+                String start=st+" "+"16:00:00";
+                String end=st+" "+"18:00:00";
                 Employee leaveNum = new Employee("leave",sf.parse(start),sf.parse(end));
                 return JSON.toJSONString(leaveNum);
             }
             case "4": {
                 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 System.out.println("请输入查询的开始日期(yyyy-MM-dd)");
-                String start=sc.next()+" "+"09:00:00";
-                System.out.println("请输入查询的当天时间(yyyy-MM-dd)");
-                String end=sc.next()+" "+"18:00:00";
+                String st=sc.next();
+                String start=st+" "+"09:00:00";
+                String end=st+" "+"18:00:00";
                 Employee normalNum = new Employee("normal",sf.parse(start),sf.parse(end));
                 return JSON.toJSONString(normalNum);
             }
             case "0":
                 return staffView();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return clockView();
         }
     }
 
@@ -392,7 +411,8 @@ public class AdminView {
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return buyerView();
         }
     }
 
@@ -411,7 +431,8 @@ public class AdminView {
             case "0":
                 return command();
             default:
-                return "没有该操作";
+                System.out.println("没有该操作");
+                return cashierView();
         }
     }
 //注销用户
@@ -436,6 +457,7 @@ public class AdminView {
         String regx1 = "S\\d{3,4}";//账号正则
         String regx2 = "[a-zA-Z]{2,4}[0-9]{2,7}|[0-9][a-zA-Z]{3,7}|[a-zA-Z][0-9]{3,7}";
         String regx3 = "1[^012]\\d{9}";//手机正则
+
         String userName = sc.next();
         //0返回原界面
         if(userName.equals("0")){
@@ -465,12 +487,19 @@ public class AdminView {
             }
             System.out.println("密码不安全,请重新输入");
         }
-        String sex = sc.next();
+        String sex;
+        while(true){
+            sex = sc.next();
+            if (sex.equals("男")||sex.equals("女")) {
+                break;
+            }
+            System.out.println("输入不正确，请重新输入");
+        }
         int role=sc.nextInt();
         //注册时间
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date();
-        BigDecimal big=new BigDecimal(sc.next());
+        BigDecimal big=sc.nextBigDecimal();
         Employee employee = new Employee("add", number, password, userName, phone, sex,role,sf.format(date),big);
         return JSON.toJSONString(employee);
     }
